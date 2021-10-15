@@ -98,8 +98,9 @@ const internQuestions = [
 
 const myTeam = new Team()
 
-function createHTML(){
-  fs.writeFile('./dist/myTeam.html', /*generateHTML(myTeam)*/JSON.stringify(myTeam), err => err ? console.error(err): null);
+function createHTML(data){
+  console.log(generateHTML(data))
+  // fs.writeFile('./dist/myTeam.html', generateHTML(data), err => err ? console.error(err): null);
 }
 
 function otherPrompts(choice) {
@@ -119,7 +120,7 @@ function otherPrompts(choice) {
       })
   } else {
     console.log('Done! Generating HTML')
-    createHTML();
+    createHTML(JSON.stringify(myTeam));
   }
 };
 

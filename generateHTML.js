@@ -18,18 +18,29 @@ const generateCards = (objArray)=> new Promise((resolve, reject)=>{
 })
 
 function generateHTML(data){
-  necessaryData.push([data.employees, data.interns])
+  let parsed = JSON.parse(data);
+  necessaryData.push(parsed.engineers, parsed.interns)
+  // console.log(necessaryData);
+  // console.log('Before:' + necessaryData);
   let promises = []
-  necessaryData.map(info => promises.push(generateCards(info)));
-  Promise.all(promises)
-    .then(generatedCards => createDocument(data, generatedCards))
-    .catch(err => console.error(err));
+  necessaryData.forEach(info => promises.push(generateCards(info)));
+  // console.log(promises)
+  // console.log('After:' + necessaryData);
+  // Promise.all(promises)
+  //   .then(generatedCards => {
+  //     // console.log('Cards' + generatedCards);
+  //     // console.log('AllData' + parsed);
+  //     // createDocument(parsed, generatedCards)
+  //   })
+  //   .catch(err => console.error(err));
 }
 
-function createDocument(allData, cards){
-  return `<!DOCTYPE html>
-  ${allData.manager}
+// function createDocument(allData, cards){
+//   return `<!DOCTYPE html>
+//   ${allData.manager}
 
-  ${cards}
-  `
-}
+//   ${cards}
+//   `
+// }
+
+module.exports = generateHTML;
