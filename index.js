@@ -99,7 +99,7 @@ const internQuestions = [
 const myTeam = new Team()
 
 function createHTML(){
-  fs.writeFile('./dist/myTeam.html', /*generateHTML(myTeam)*/JSON.stringify(myTeam), err => console.error(err));
+  fs.writeFile('./dist/myTeam.html', /*generateHTML(myTeam)*/JSON.stringify(myTeam), err => err ? console.error(err): null);
 }
 
 function otherPrompts(choice) {
