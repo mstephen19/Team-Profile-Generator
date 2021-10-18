@@ -1,14 +1,30 @@
+* {
+  font-family: 'Courier New', Courier, monospace;
+}
+
+header {
+  width: 100vw;
+  height: 15vh;
+  background: green;
+}
+
 .container {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: flex-start;
   align-items: center;
   overflow-x: scroll;
+  padding: 10px;
 }
 
 .card {
-  width: 25%;
+  flex: 0 0 350px;
+  flex-direction: column;
+  width: 350px;
   height: 50%;
   border: 1px solid black;
   border-radius: 10px;
   background: grey;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

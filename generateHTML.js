@@ -5,14 +5,14 @@ const generateCards = (objArray)=>new Promise((resolve, reject)=>{
     let cardsArr = [];
     let engOrInt = objArray[0].school ? 'Intern' : 'Engineer'
     for (let obj of objArray){
-      let schoolOrGit = obj.school ? `<p>${obj.school}</p>` : `<p><a href="https://github.com/${obj.github}">GitHub</a></p>`
+      let schoolOrGit = obj.school ? `<p>School: ${obj.school}</p>` : `<p><a href="https://github.com/${obj.github}">GitHub</a></p>`
       cardsArr.push(`<div class="card">
       <h2>${engOrInt}</h2>
       <h1>${obj.name}</h1>
       <h3>Employee ID: ${obj.id}</h3>
-      <p>Email: ${obj.email}</p>
+      <p><a href="mailto:${obj.email}">Email</a></p>
       ${schoolOrGit}
-      </div>`)
+    </div>`)
     }
     resolve(cardsArr);
   } else {
@@ -30,17 +30,22 @@ function createDocument(man, cards){
   </head>
   <body>
 
-  <div class="card">
-    <h2>Manager</h2>
-    <h1>${man.managerName}</h1>
-    <h3>Employee ID: ${man.managerId}</h3>
-    <p>Email: ${man.managerEmail}</p>
-    <p>Office #: ${man.managerOffice}</p>
+  <div class="container">
+    <div class="card">
+      <h2>Manager</h2>
+      <h1>${man.managerName}</h1>
+      <h3>Employee ID: ${man.managerId}</h3>
+      <p><a href="mailto:${man.managerEmail}">Email</a></p>
+      <p>Office #: ${man.managerOffice}</p>
+    </div>
+  </div>
+  <div class="container">
+    ${cards[0].join('\n')}
   </div>
 
-  ${cards[0].join('\n')}
-
-  ${cards[1].join('\n')}
+  <div class="container">
+    ${cards[1].join('\n')}
+  </div>
 
 
   </body>
