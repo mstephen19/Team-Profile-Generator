@@ -1,6 +1,7 @@
 const Team = require('../lib/team');
 const Engineer = require('../lib/engineer');
 const Intern = require('../lib/intern');
+const Manager = require('../lib/manager');
 
 describe('Team', ()=>{
   describe('team creation', ()=>{
@@ -13,13 +14,18 @@ describe('Team', ()=>{
     });
   });
   describe('setManager',()=>{
-    it('should add manager info',()=>{
+    it('should add manager',()=>{
       const team = new Team();
-      const manager = {name: 'test', id: 'test'}
+      const manager = new Manager('test', 'test', 'test', 'test')
       team.setManager(manager)
       expect(team.manager).not.toEqual(undefined)
-      expect(team.manager).toHaveProperty('name')
-      expect(team.manager).toHaveProperty('id')
+      expect(team.manager).toHaveProperty('managerName', 'test')
+    })
+    it('should throw an error it manager is not an instance of Manager class', ()=>{
+      const team = new Team();
+      const fakeManager = {name: 'john', apples: '7'}
+      const cb = ()=> team.setManager(fakeManager);
+      expect(cb).toThrow();
     })
   })
   describe('addEngineer', ()=>{
@@ -32,7 +38,7 @@ describe('Team', ()=>{
       expect(team.engineers.length).toEqual(2);
       expect(team.engineers[0]).toHaveProperty('name', 'john')
     })
-    it('should throw an error if intern is not an instance of the Engineer class', ()=>{
+    it('should throw an error if engineer is not an instance of the Engineer class', ()=>{
       const team = new Team();
       const fakeEngineer = {name: 'john', apples: '7'}
       const cb = ()=> team.addEngineer(fakeEngineer);
