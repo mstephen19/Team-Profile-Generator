@@ -1,27 +1,61 @@
 const fs = require('fs');
 
+// const generateCards = (objArray)=>new Promise((resolve, reject)=>{
+//   if (objArray){
+//     let cardsArr = [];
+//     let engOrInt = objArray[0].school ? 'Intern' : 'Engineer'
+//     for (let obj of objArray){
+//       let schoolOrGit = obj.school ? `<p>School: ${obj.school}</p>` : `<p><a href="https://github.com/${obj.github}">GitHub</a></p>`
+//       cardsArr.push(`<div class="card">
+//       <h2>${engOrInt}</h2>
+//       <h1>${obj.name}</h1>
+//       <h3>Employee ID: ${obj.id}</h3>
+//       <p><a href="mailto:${obj.email}">Email</a></p>
+//       ${schoolOrGit}
+//     </div>`)
+//     }
+//     resolve(cardsArr);
+//   } else {
+//     reject(err);
+//   }
+// })
+
 const generateCards = (objArray)=>new Promise((resolve, reject)=>{
-  if (objArray){
-    let cardsArr = [];
-    let engOrInt = objArray[0].school ? 'Intern' : 'Engineer'
-    for (let obj of objArray){
-      let schoolOrGit = obj.school ? `<p>School: ${obj.school}</p>` : `<p><a href="https://github.com/${obj.github}">GitHub</a></p>`
-      cardsArr.push(`<div class="card">
-      <h2>${engOrInt}</h2>
-      <h1>${obj.name}</h1>
-      <h3>Employee ID: ${obj.id}</h3>
-      <p><a href="mailto:${obj.email}">Email</a></p>
-      ${schoolOrGit}
-    </div>`)
+    if (objArray.length !== 0){
+      let cardsArr = [];
+      let engOrInt = objArray[0].school ? 'Intern' : 'Engineer'
+      for (let obj of objArray){
+        let schoolOrGit = obj.school ? `<p>School: ${obj.school}</p>` : `<p><a href="https://github.com/${obj.github}">GitHub</a></p>`
+        cardsArr.push(`<div class="card">
+        <h2>${engOrInt}</h2>
+        <h1>${obj.name}</h1>
+        <h3>Employee ID: ${obj.id}</h3>
+        <p><a href="mailto:${obj.email}">Email</a></p>
+        ${schoolOrGit}
+      </div>`)
+      }
+      resolve(cardsArr);
+    } else {
+      reject(new Error(err));
     }
-    resolve(cardsArr);
-  } else {
-    reject(err);
-  }
-})
+  })
 
 
 function createDocument(man, cards){
+  let containers;
+  if (cards.length === 1){
+    containers = `<div class="container">
+    ${cards[0].join('\n')}
+  </div>`
+  } else {
+    containers = `<div class="container">
+    ${cards[0].join('\n')}
+  </div>
+
+  <div class="container">
+    ${cards[1].join('\n')}
+  </div>`
+  }
   return `<!DOCTYPE html>
   <html>
   <head>
@@ -29,7 +63,9 @@ function createDocument(man, cards){
   <link rel="stylesheet" href="style.css">
   </head>
   <body>
-
+  <header>
+    <h1>My Team</h1>
+  </header>
   <div class="container">
     <div class="card">
       <h2>Manager</h2>
@@ -39,24 +75,32 @@ function createDocument(man, cards){
       <p>Office #: ${man.managerOffice}</p>
     </div>
   </div>
-  <div class="container">
-    ${cards[0].join('\n')}
-  </div>
-
-  <div class="container">
-    ${cards[1].join('\n')}
-  </div>
-
-
+  ${containers}
   </body>
   </html>
   `
 }
 
+// function generateHTML(data){
+//   const parsed = JSON.parse(data);
+//   const manager = parsed.manager;
+//   let promises = [generateCards(parsed.engineers), generateCards(parsed.interns)]
+//   Promise.all(promises)
+//     .then(result => fs.writeFile('./dist/myTeam.html', createDocument(manager, result), err => err ? console.error(err): null));
+// }
+
 function generateHTML(data){
   const parsed = JSON.parse(data);
   const manager = parsed.manager;
-  let promises = [generateCards(parsed.engineers), generateCards(parsed.interns)]
+  let promises = [];
+  if (parsed.interns.length !== 0 && parsed.engineers.length !== 0) {
+    promises.push(generateCards(parsed.engineers))
+    promises.push(generateCards(parsed.interns))
+  } else if (parsed.interns.length === 0) {
+    promises.push(generateCards(parsed.engineers))
+  } else {
+    promises.push(generateCards(parsed.interns))
+  }
   Promise.all(promises)
     .then(result => fs.writeFile('./dist/myTeam.html', createDocument(manager, result), err => err ? console.error(err): null));
 }

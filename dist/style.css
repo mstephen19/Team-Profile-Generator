@@ -1,11 +1,22 @@
 * {
   font-family: 'Courier New', Courier, monospace;
+  padding: none;
+  margin: none;
+}
+
+body {
+  background: rgb(248, 138, 138);
+  width: 100vw;
+  height: 100vh;
 }
 
 header {
   width: 100vw;
   height: 15vh;
   background: green;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .container {
