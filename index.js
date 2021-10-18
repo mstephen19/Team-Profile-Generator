@@ -4,6 +4,7 @@ const generateHTML = require('./generateHTML')
 const Team = require('./lib/team');
 const Engineer = require('./lib/engineer');
 const Intern = require('./lib/intern')
+const Manager = require('./lib/manager')
 
 const managerQuestions = [
   {
@@ -99,8 +100,7 @@ const internQuestions = [
 const myTeam = new Team()
 
 function createHTML(data){
-  JSON.stringify(generateHTML(data))
-  // fs.writeFile('./dist/myTeam.html', JSON.stringify(generateHTML(data)), err => err ? console.error(err): null);
+  generateHTML(data);
 }
 
 function otherPrompts(choice) {
@@ -133,21 +133,11 @@ const choices = _=> {
 function init(){
   inquirer.prompt(managerQuestions)
   .then(response => {
-    myTeam.setManager(response)
+    const newMan = new Manager(response.managerName, response.managerId, response.managerEmail, response.managerOffice)
+    myTeam.setManager(newMan)
     choices();
   })
   .catch(err=> {throw new Error(err)})
 };
 
 init()
-
-// On init, create a new team.
-// Prompt for the manager questions, based on those answers do setManager
-// Prompt for nextChoice
-// If user selects Engineer, run forEngineer function, else if, run forIntern function, else run the toFile function
-
-// In toFile function, pass in the generateHTML function with myTeam as an argument
-// in generateHTML, create a function which for each engineer generates the code for a card with their information and pushes it into an array
-// in generateHTML, do the same function for interns
-// Promise.all those two functions, then once resolved, take the end results and use them accordingly in main generateHTML function
-// return template literal

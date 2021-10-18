@@ -79,10 +79,3 @@ function generateHTML(data){
 }
 
 module.exports = generateHTML;
-
-// pseudocode for self
-
-// in generateHTML, create a function which for each engineer generates the code for a card with their information and pushes it into an array
-// in generateHTML, do the same function for interns
-// Promise.all those two functions, then once resolved, take the end results and use them accordingly in main generateHTML function
-// return template literal

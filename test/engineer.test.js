@@ -8,4 +8,8 @@ describe('engineer class', ()=>{
     expect(newEngineer).toHaveProperty('email', 'test')
     expect(newEngineer).toHaveProperty('github', 'test')
   })
+  it('should throw an error if not all arguments are met', ()=>{
+    const cb = ()=> new Engineer('beep', 'boop')
+    expect(cb).toThrow();
+  })
 })
