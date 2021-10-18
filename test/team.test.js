@@ -30,6 +30,30 @@ describe('Team', ()=>{
       team.addEngineer(engineer)
       team.addEngineer(engineer2)
       expect(team.engineers.length).toEqual(2);
+      expect(team.engineers[0]).toHaveProperty('name', 'john')
+    })
+    it('should throw an error if intern is not an instance of the Engineer class', ()=>{
+      const team = new Team();
+      const fakeEngineer = {name: 'john', apples: '7'}
+      const cb = ()=> team.addEngineer(fakeEngineer);
+      expect(cb).toThrow();
+    })
+  })
+  describe('addIntern', ()=>{
+    it('should add an intern', ()=>{
+      const team = new Team();
+      const intern = new Intern('john', 'id', 'emailHere', 'harvard');
+      const intern2 = new Intern('jimmy', 'id', 'emailHere', 'berkeley');
+      team.addIntern(intern);
+      team.addIntern(intern2);
+      expect(team.interns.length).toEqual(2);
+      expect(team.interns[0]).toHaveProperty('name', 'john')
+    })
+    it('should throw an error if intern is not an instance of the Intern class', ()=>{
+      const team = new Team();
+      const fakeIntern = {name: 'john', apples: '7'}
+      const cb = ()=> team.addIntern(fakeIntern);
+      expect(cb).toThrow();
     })
   })
 })

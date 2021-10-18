@@ -25,6 +25,7 @@ header {
   align-items: center;
   overflow-x: scroll;
   padding: 10px;
+  flex-direction: row;
 }
 
 .card {

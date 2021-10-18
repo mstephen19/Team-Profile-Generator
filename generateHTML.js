@@ -5,12 +5,12 @@ const generateCards = (objArray)=>new Promise((resolve, reject)=>{
       let cardsArr = [];
       let engOrInt = objArray[0].school ? 'Intern' : 'Engineer'
       for (let obj of objArray){
-        let schoolOrGit = obj.school ? `<p>School: ${obj.school}</p>` : `<p><a href="https://github.com/${obj.github} target="_blank">GitHub</a></p>`
+        let schoolOrGit = obj.school ? `<p>School: ${obj.school}</p>` : `<p><a href="https://github.com/${obj.github}" target="_blank">GitHub</a></p>`
         cardsArr.push(`<div class="card">
         <h2>${engOrInt}</h2>
         <h1>${obj.name}</h1>
         <h3>Employee ID: ${obj.id}</h3>
-        <p><a href="mailto:${obj.email} target="_blank">Email</a></p>
+        <p><a href="mailto:${obj.email}" target="_blank">Email</a></p>
         ${schoolOrGit}
     </div>`)
       }
@@ -50,11 +50,13 @@ function createDocument(man, cards){
       <h2>Manager</h2>
       <h1>${man.managerName}</h1>
       <h3>Employee ID: ${man.managerId}</h3>
-      <p><a href="mailto:${man.managerEmail}" target="_blank>Email</a></p>
+      <p><a href="mailto:${man.managerEmail}" target="_blank">Email</a></p>
       <p>Office #: ${man.managerOffice}</p>
     </div>
   </div>
+
   ${containers}
+
   </body>
   </html>
   `
