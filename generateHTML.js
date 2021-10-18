@@ -1,46 +1,66 @@
-let necessaryData = [];
+const fs = require('fs');
 
-const generateCards = (objArray)=> new Promise((resolve, reject)=>{
+const generateCards = (objArray)=>new Promise((resolve, reject)=>{
   if (objArray){
-    let cards = objArray.map(obj => {
-      let schoolOrGit;
-      obj.school ? schoolOrGit = obj.school : schoolOrGit = obj.github;
-      `${obj.name}
-      ${obj.id}
-      ${obj.email}
+    let cardsArr = [];
+    let engOrInt = objArray[0].school ? 'Intern' : 'Engineer'
+    for (let obj of objArray){
+      let schoolOrGit = obj.school ? `<p>${obj.school}</p>` : `<p><a href="https://github.com/${obj.github}">GitHub</a></p>`
+      cardsArr.push(`<div class="card">
+      <h2>${engOrInt}</h2>
+      <h1>${obj.name}</h1>
+      <h3>Employee ID: ${obj.id}</h3>
+      <p>Email: ${obj.email}</p>
       ${schoolOrGit}
-      `
-    })
-    resolve(cards);
+      </div>`)
+    }
+    resolve(cardsArr);
   } else {
-    reject(new Error('Oh no! Cards failed to generate'))
+    reject(err);
   }
 })
 
-function generateHTML(data){
-  let parsed = JSON.parse(data);
-  necessaryData.push(parsed.engineers, parsed.interns)
-  // console.log(necessaryData);
-  // console.log('Before:' + necessaryData);
-  let promises = []
-  necessaryData.forEach(info => promises.push(generateCards(info)));
-  // console.log(promises)
-  // console.log('After:' + necessaryData);
-  // Promise.all(promises)
-  //   .then(generatedCards => {
-  //     // console.log('Cards' + generatedCards);
-  //     // console.log('AllData' + parsed);
-  //     // createDocument(parsed, generatedCards)
-  //   })
-  //   .catch(err => console.error(err));
+
+function createDocument(man, cards){
+  return `<!DOCTYPE html>
+  <html>
+  <head>
+  <title>My Team</title>
+  <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+
+  <div class="card">
+    <h2>Manager</h2>
+    <h1>${man.managerName}</h1>
+    <h3>Employee ID: ${man.managerId}</h3>
+    <p>Email: ${man.managerEmail}</p>
+    <p>Office #: ${man.managerOffice}</p>
+  </div>
+
+  ${cards[0].join('\n')}
+
+  ${cards[1].join('\n')}
+
+
+  </body>
+  </html>
+  `
 }
 
-// function createDocument(allData, cards){
-//   return `<!DOCTYPE html>
-//   ${allData.manager}
-
-//   ${cards}
-//   `
-// }
+function generateHTML(data){
+  const parsed = JSON.parse(data);
+  const manager = parsed.manager;
+  let promises = [generateCards(parsed.engineers), generateCards(parsed.interns)]
+  Promise.all(promises)
+    .then(result => fs.writeFile('./dist/myTeam.html', createDocument(manager, result), err => err ? console.error(err): null));
+}
 
 module.exports = generateHTML;
+
+// in generateHTML, create a function which for each engineer generates the code for a card with their information and pushes it into an array
+// in generateHTML, do the same function for interns
+// Promise.all those two functions, then once resolved, take the end results and use them accordingly in main generateHTML function
+// return template literal
+
+// MAYBE you can just put functions inside of template literals? then it will be fairly easier
