@@ -32,11 +32,11 @@ header {
   flex: 0 0 350px;
   flex-direction: column;
   width: 350px;
-  height: 50%;
+  height: 40vh;
   border: 1px solid black;
   border-radius: 10px;
   background: grey;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
 }
